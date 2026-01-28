@@ -69,7 +69,8 @@ RUN echo -e "[almalinux9-appstream]" \
  "\nenabled = 1" \
  "\ngpgcheck = 0" > /etc/yum.repos.d/almalinux.repo
 
-RUN microdnf -y install podman
+RUN microdnf -y install podman nodejs
+RUN npm install -g typescript-language-server typescript
 RUN echo mta:x:1001:0:1001 user:/home/mta:/sbin/nologin > /etc/passwd
 RUN echo mta:10000:5000 > /etc/subuid
 RUN echo mta:10000:5000 > /etc/subgid
@@ -85,9 +86,8 @@ RUN chown -R 0:1001 /usr/local/static-report
 COPY --from=builder /workspace/kantra /usr/local/bin/kantra
 COPY --from=builder /workspace/darwin-kantra /usr/local/bin/darwin-kantra
 COPY --from=builder /workspace/windows-kantra /usr/local/bin/windows-kantra
-COPY --from=rulesets /rulesets/default/generated /opt/rulesets
+COPY --from=rulesets /rulesets/stable /opt/rulesets
 COPY --from=rulesets /windup-rulesets/rules/rules-reviewed/openrewrite /opt/openrewrite
-COPY --from=static-report /usr/bin/js-bundle-generator /usr/local/bin
 COPY --from=static-report /usr/local/static-report /usr/local/static-report
 COPY --from=jaeger-builder /go/bin/all-in-one-linux /usr/local/bin/all-in-one-linux
 COPY --from=generic-provider /usr/local/bin/generic-external-provider /usr/local/bin/generic-external-provider
