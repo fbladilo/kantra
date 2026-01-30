@@ -83,8 +83,8 @@ COPY --from=builder --chmod=755 /workspace/openrewrite_entrypoint.sh /usr/bin/op
 COPY --from=builder /workspace/LICENSE /licenses/
 
 # Only do this downstream
-RUN find /opt/rulesets/azure -type f -exec sed -i '/konveyor.io\/target=azure-aks/d' {} +
-RUN find /opt/rulesets/azure -type f -exec sed -i '/konveyor.io\/target=azure-container-apps/d' {} +
+RUN find /opt/rulesets -type f -exec sed -i '/konveyor.io\/target=azure-aks/d' {} +
+RUN find /opt/rulesets -type f -exec sed -i '/konveyor.io\/target=azure-container-apps/d' {} +
 
 USER 1001
 
